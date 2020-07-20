@@ -12,7 +12,7 @@ describe("Test form inputs", () => {
       cy.get('input[name="anchovi"]').check().should("be.checked");
     });
     it("Testing special instructions", () => {
-      cy.get('textarea[name="instructions"]')
+      cy.get('input[name="instruction"]')
         .type("Please leave the pizza at door")
         .should("have.value", "Please leave the pizza at door");
     });
