@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import * as yup from "yup";
 import Input from "./Input";
+import UserList from "./UserList";
 
 export default function Form() {
 
@@ -20,6 +21,7 @@ export default function Form() {
   // console.log(formState)
   const [errors, setErrors] = useState({...defaultState})
   const [buttonDisabled, setButtonDisabled] = useState(true)
+  const [user, setUser] = useState([]);
 
   useEffect(()=> {
     formSchema.validate(formState)
@@ -31,7 +33,7 @@ export default function Form() {
   // formState schema
 
   let formSchema = yup.object().shape({
-    name: yup.string().required("Please provide name"),
+    name: yup.string().min(2).required("Please provide a name"),
     instruction: yup.string().required(),
     email: yup
     .string()
@@ -88,7 +90,9 @@ export default function Form() {
 
     axios
       .post("https://reqres.in/api/users", formState)
-      .then(() => console.log("form submitted success"))
+      .then((response) => 
+      setUser([...user, response.data])
+      )
       .catch(err => console.log(err));
   }
 
@@ -207,6 +211,7 @@ export default function Form() {
       <p>
       <button disabled={buttonDisabled} type="submit">Add to Order</button>
       </p>
+      <UserList user={user} />
 
 
     </form>
